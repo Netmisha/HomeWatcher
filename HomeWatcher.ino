@@ -1,17 +1,16 @@
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
-const unsigned long SECURITY_DELAY_TIME = 5 * 60 * 1000;
+const unsigned long SECURITY_DELAY_TIME = 3 * 60 * 1000;
 
 const unsigned long BLINK_DELAY_TIME = 1000;
 const unsigned long CHECK_DELAY_TIME = 100;
 
-const int pinBtnReset = 0;
-const int pinBtnSecurity = 1;
-const int pinBtnAlarm = 2;
+const int pinBtnReset = 2;
+const int pinBtnSecurity = 4;
+const int pinBtnAlarm = 3;
 
-const int pinLedAlarm = 13;
-const int pinLedGas = 12;
-const int pinLedSecurity = 11;
+const int pinLedAlarm = 9;
+const int pinLedGas = 8;
 
 const int pinAnalogGas = 0;
 const int pinAnalogMoveSensor = 1;
@@ -34,7 +33,6 @@ void setup() {
 	Serial.begin(9600);
 	pinMode(pinLedAlarm, OUTPUT);
 	pinMode(pinLedGas, OUTPUT);
-	pinMode(pinLedSecurity, OUTPUT);
 
 	pinMode(pinBtnReset, INPUT);
 	pinMode(pinBtnSecurity, INPUT);
@@ -48,13 +46,22 @@ void readData() {
 
 	mSenGas = analogRead(pinAnalogGas);
 
+        Serial.print("mBtnReset = ");
+	Serial.println(mBtnReset);
+
+        Serial.print("mBtnSecurity = ");
+	Serial.println(mBtnSecurity);
+
+        Serial.print("mBtnAlarm = ");
+	Serial.println(mBtnAlarm);
+
+        Serial.print("Gas = ");
 	Serial.println(mSenGas);
 }
 
 void ResetLeds() {
 	digitalWrite(pinLedAlarm, LOW);
 	digitalWrite(pinLedGas, LOW);
-	digitalWrite(pinLedSecurity, LOW);
 }
 
 bool ResetDelay(unsigned long mSec) {
@@ -86,7 +93,7 @@ bool BlinkLed(int led, int nTimes) {
 }
 
 void loop() {
-
+        Serial.println("*******************************");
 	readData();
 	Serial.println(mCurentState);
   
@@ -98,11 +105,11 @@ void loop() {
 	if (mBtnSecurity) {
 		mCurentState = SECURITY;
 
-		if (BlinkLed(pinLedSecurity, 5) != false) {
+		if (BlinkLed(pinLedAlarm, 5) != false) {
 			Serial.print("SECURITY delay: ");
 			Serial.println(SECURITY_DELAY_TIME, DEC);
 			ResetDelay(SECURITY_DELAY_TIME);
-          	digitalWrite(pinLedSecurity, HIGH);
+          	digitalWrite(pinLedAlarm, HIGH);
 		} else {
 			Serial.print("SECURITY reset by user");
 		}
@@ -115,7 +122,7 @@ void loop() {
 
 	}
 
-	if (mSenGas < GAS_MAX_VAL) {
+	if (mSenGas > GAS_MAX_VAL) {
 		mCurentState = ALARM;
 		digitalWrite(pinLedGas, HIGH);
 		Serial.println("ALARM");
@@ -132,7 +139,7 @@ void loop() {
 		if (mSenMove < MOVE_MAX_VAL) {
 			Serial.println("mSenMove < MOVE_MAX_VAL");
           
-          if (BlinkLed(pinLedSecurity, 10) == true) {
+          if (BlinkLed(pinLedAlarm, 10) == true) {
 			mCurentState = ALARM;
 		} 
 			

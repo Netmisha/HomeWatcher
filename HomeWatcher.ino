@@ -1,6 +1,8 @@
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
-const unsigned long SECURITY_DELAY_TIME = 3 * 60 * 1000;
+
+const unsigned long SECURITY_DELAY_TIME = 20 * 1000;
+//const unsigned long SECURITY_DELAY_TIME = 3 * 60 * 1000;
 
 const unsigned long BLINK_DELAY_TIME = 1000;
 const unsigned long CHECK_DELAY_TIME = 100;
@@ -13,7 +15,7 @@ const int pinLedAlarm = 9;
 const int pinLedGas = 8;
 
 const int pinAnalogGas = 0;
-const int pinAnalogMoveSensor = 1;
+const int pinMoveSensor = 5;
 
 enum DEV_STATE {
 	REGULAR = 0, SECURITY, WARNING, ALARM
@@ -109,7 +111,7 @@ void loop() {
 			Serial.print("SECURITY delay: ");
 			Serial.println(SECURITY_DELAY_TIME, DEC);
 			ResetDelay(SECURITY_DELAY_TIME);
-          	digitalWrite(pinLedAlarm, HIGH);
+          	//digitalWrite(pinLedAlarm, HIGH);
 		} else {
 			Serial.print("SECURITY reset by user");
 		}
@@ -135,14 +137,13 @@ void loop() {
 	case WARNING:
 		break;
 	case SECURITY:
-		mSenMove = analogRead(pinAnalogMoveSensor);
-		if (mSenMove < MOVE_MAX_VAL) {
-			Serial.println("mSenMove < MOVE_MAX_VAL");
+		mSenMove = digitalRead(pinMoveSensor);
+		if (mSenMove) {
+			Serial.println("mSenMove");
           
-          if (BlinkLed(pinLedAlarm, 10) == true) {
-			mCurentState = ALARM;
-		} 
-			
+                         if (BlinkLed(pinLedAlarm, 10) == true) {
+			        mCurentState = ALARM;
+		          } 	
 		}
 		break;
 	case ALARM:

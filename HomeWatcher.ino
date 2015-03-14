@@ -1,3 +1,6 @@
+#include <SoftwareSerial.h>
+#include "MobileManager.h"
+
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
 
@@ -29,6 +32,8 @@ bool mBtnAlarm = false;
 
 int mSenGas = 0;
 int mSenMove = 0;
+
+MobileManager mobManager(10,11);
 
 void setup() {
 

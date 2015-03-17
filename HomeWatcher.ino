@@ -1,5 +1,6 @@
 #include <SoftwareSerial.h>
 #include "MobileManager.h"
+#include "OutputChip.h" 
 
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
@@ -34,6 +35,9 @@ int mSenGas = 0;
 int mSenMove = 0;
 
 MobileManager mobManager(10,11);
+
+
+OutputChip pinMonitor(13,12,11);
 
 void setup() {
 

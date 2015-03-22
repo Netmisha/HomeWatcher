@@ -1,6 +1,7 @@
 #include <SoftwareSerial.h>
 #include "MobileManager.h"
 #include "OutputChip.h" 
+#include "InputChip.h"
 
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
@@ -15,8 +16,8 @@ const int pinBtnReset = 2;
 const int pinBtnSecurity = 4;
 const int pinBtnAlarm = 3;
 
-const int pinLedAlarm = 9;
-const int pinLedGas = 8;
+const int pinLedAlarm = 6;
+const int pinLedGas = 6;
 
 const int pinAnalogGas = 0;
 const int pinMoveSensor = 5;
@@ -38,6 +39,7 @@ MobileManager mobManager(10,11);
 
 
 OutputChip pinMonitor(13,12,11);
+InputChip pinConsole(7,8,9);
 
 void setup() {
 
@@ -51,6 +53,9 @@ void setup() {
 }
 
 void readData() {
+    pinConsole.update();
+    pinConsole.print();
+
 	mBtnReset = digitalRead(pinBtnReset) != 0;
 	mBtnSecurity = digitalRead(pinBtnSecurity) != 0;
 	mBtnAlarm = digitalRead(pinBtnAlarm) != 0;

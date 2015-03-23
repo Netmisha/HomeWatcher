@@ -1,16 +1,8 @@
+#include "config.h"
 #include <SoftwareSerial.h>
 #include "MobileManager.h"
 #include "OutputChip.h" 
 #include "InputChip.h"
-
-const int GAS_MAX_VAL = 500;
-const int MOVE_MAX_VAL = 500;
-
-const unsigned long SECURITY_DELAY_TIME = 20 * 1000;
-//const unsigned long SECURITY_DELAY_TIME = 3 * 60 * 1000;
-
-const unsigned long BLINK_DELAY_TIME = 1000;
-const unsigned long CHECK_DELAY_TIME = 100;
 
 const int pinBtnReset = 2;
 const int pinBtnSecurity = 4;
@@ -23,7 +15,10 @@ const int pinAnalogGas = 0;
 const int pinMoveSensor = 5;
 
 enum DEV_STATE {
-	REGULAR = 0, SECURITY, WARNING, ALARM
+	REGULAR = 0, 
+        SECURITY, 
+        WARNING, 
+        ALARM
 };
 
 int mCurentState = REGULAR;
@@ -35,11 +30,9 @@ bool mBtnAlarm = false;
 int mSenGas = 0;
 int mSenMove = 0;
 
-MobileManager mobManager(10,11);
-
-
-OutputChip pinMonitor(13,12,11);
-InputChip pinConsole(7,8,9);
+MobileManager mobManager(PIN_MOBILE_RX, PIN_MOBILE_TX);
+OutputChip pinMonitor(PIN_CHIP_OUT_LATCH, PIN_CHIP_OUT_CLOCK, PIN_CHIP_OUT_DATA);
+InputChip pinConsole(PIN_CHIP_IN_LATCH, PIN_CHIP_IN_CLOCK, PIN_CHIP_IN_DATA);
 
 void setup() {
 

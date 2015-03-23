@@ -1,6 +1,9 @@
 #ifndef config_h
 #define config_h
+#include "Arduino.h"
 
+
+#define LOG_DEBUG;
 
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;

@@ -15,13 +15,13 @@ const unsigned long SECURITY_DELAY_TIME = 20 * 1000;
 const unsigned long BLINK_DELAY_TIME = 1000;
 const unsigned long CHECK_DELAY_TIME = 100;
 
-
+const int PIN_AVAILABLE_0 = 0;
 const int PIN_AVAILABLE_1 = 1;
-const int PIN_AVAILABLE_2 = 2;
-const int PIN_AVAILABLE_3 = 3;
+const int PIN_MOBILE_TX = 2;
+const int PIN_MOBILE_RX = 3;
 const int PIN_AVAILABLE_4 = 4;
-const int PIN_MOBILE_RX = 5;
-const int PIN_MOBILE_TX = 6;
+const int PIN_AVAILABLE_5 = 5;
+const int PIN_AVAILABLE_6 = 6;
 const int PIN_CHIP_IN_LATCH = 7;
 const int PIN_CHIP_IN_CLOCK = 8;
 const int PIN_CHIP_IN_DATA = 9;

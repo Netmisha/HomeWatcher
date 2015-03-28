@@ -50,7 +50,7 @@ void readData() {
   mBtnReset = pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0);
   mBtnAlarm = pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1);
   mBtnSecurity = pinConsole.getValue(PIN_CHIP_IN_BTN_SECURITY_2);
-  
+
   Log::d("mBtnReset", mBtnReset);
   Log::d("mBtnSecurity", mBtnSecurity);
   Log::d("mBtnAlarm", mBtnAlarm);
@@ -67,7 +67,6 @@ void ResetLeds() {
 bool ResetDelay(unsigned long mSec) {
   Log::d("ResetDelay Begin");
   for (int i = 0; i < mSec / CHECK_DELAY_TIME; i++) {
-
     pinConsole.update();
     if (pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0)) {
       Log::d("Reset bu user");
@@ -102,9 +101,12 @@ bool BlinkAlarm(int nTimes) {
 
 void loop() {
   unsigned long startTime = micros();
+  delay(1000);
   Log::d("***************BEGIN***************");
   Log::d("mCurentState", mCurentState);
   readData();
+
+  Log::d("isAT", mobManager.isAT());
 
   if (mBtnReset) {
     mCurentState = REGULAR;
@@ -123,7 +125,7 @@ void loop() {
   mSenGas = analogRead(PIN_ANALOG_0_SEN_GAS);
   Log::d("Gas Sensor", mSenGas);
   if (mSenGas > GAS_MAX_VAL) {
-    Log::d("GAS_MAX_VAL",GAS_MAX_VAL);
+    Log::d("GAS_MAX_VAL", GAS_MAX_VAL);
     mCurentState = ALARM;
     pinMonitor.setValue(PIN_CHIP_OUT_LED_GAS_6, true);
   }
@@ -152,10 +154,10 @@ void loop() {
       pinMonitor.flush();
       break;
     default:
-    Log::d("Unknown state");
+      Log::d("Unknown state");
       break;
   }
-  
+
   pinMonitor.print();
-  Log::d("****************END****************", micros()-startTime);
+  Log::d("****************END****************", micros() - startTime);
 }

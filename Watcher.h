@@ -2,14 +2,14 @@
 #define Watcher_h
 #include "config.h"
 
-class Watcher{ 
+class Watcher {
   public:
-  Watcher();
-  
-  void init();
-  void read();
-  void proceed();
-  void show();
+    Watcher();
+
+    void init();
+    void read();
+    void proceed();
+    void show();
 };
 
 #endif//Watcher_h

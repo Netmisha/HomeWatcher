@@ -1,6 +1,7 @@
 #ifndef MobileManager_h
 #define MobileManager_h
 #include "Arduino.h"
+#include "config.h"
 #include <SoftwareSerial.h>
 
 /*
@@ -12,17 +13,17 @@ AT+CMGS=21
 0011000C918390087096960000FF08417658DE0E8542
 */
 
-class MobileManager{
-	SoftwareSerial *m_pPhone;
+class MobileManager {
+    SoftwareSerial *m_pPhone;
 
-	int m_portNumber;
-        const int SEND_DELAY_TIME = 1500;
-public:
-	MobileManager(int rx, int tx);
-	~MobileManager();
-	bool isOK();
-	bool isAT();
-        void sendDelay();
-	bool sendAlarm();
+    int m_portNumber;
+    const int SEND_DELAY_TIME = 1500;
+  public:
+    MobileManager(int rx, int tx);
+    ~MobileManager();
+    bool isOK();
+    bool isAT();
+    void sendDelay();
+    bool sendAlarm();
 };
 #endif

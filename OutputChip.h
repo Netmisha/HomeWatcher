@@ -1,5 +1,6 @@
 #ifndef OutputChip_h
 #define OutputChip_h
+#include "config.h"
 
 class OutputChip{
   
@@ -24,6 +25,7 @@ class OutputChip{
   bool reset();
   
   bool flush();
+  void print();
 };
 
 #endif//OutputChip

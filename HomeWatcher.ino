@@ -1,7 +1,9 @@
+#include <LiquidCrystal.h>
+
 #include "config.h"
 #include <SoftwareSerial.h>
 #include "MobileManager.h"
-#include "OutputChip.h" 
+#include "OutputChip.h"
 #include "InputChip.h"
 
 const int pinBtnReset = 2;
@@ -11,14 +13,13 @@ const int pinBtnAlarm = 3;
 const int pinLedAlarm = 6;
 const int pinLedGas = 6;
 
-const int pinAnalogGas = 0;
 const int pinMoveSensor = 5;
 
 enum DEV_STATE {
-	REGULAR = 0, 
-        SECURITY, 
-        WARNING, 
-        ALARM
+  REGULAR = 0,
+  SECURITY,
+  WARNING,
+  ALARM
 };
 
 int mCurentState = REGULAR;
@@ -35,129 +36,126 @@ OutputChip pinMonitor(PIN_CHIP_OUT_LATCH, PIN_CHIP_OUT_CLOCK, PIN_CHIP_OUT_DATA)
 InputChip pinConsole(PIN_CHIP_IN_LATCH, PIN_CHIP_IN_CLOCK, PIN_CHIP_IN_DATA);
 
 void setup() {
-
-	Serial.begin(9600);
-	pinMode(pinLedAlarm, OUTPUT);
-	pinMode(pinLedGas, OUTPUT);
-
-	pinMode(pinBtnReset, INPUT);
-	pinMode(pinBtnSecurity, INPUT);
-	pinMode(pinBtnAlarm, OUTPUT);
+  Log::init();
+  Log::d("Setup Begin");
+  pinMode(pinLedAlarm, OUTPUT);
+  pinMode(pinLedGas, OUTPUT);
+  Log::d("Setup End");
 }
 
 void readData() {
-    pinConsole.update();
-    pinConsole.print();
+  pinConsole.update();
+  pinConsole.print();
 
-	mBtnReset = digitalRead(pinBtnReset) != 0;
-	mBtnSecurity = digitalRead(pinBtnSecurity) != 0;
-	mBtnAlarm = digitalRead(pinBtnAlarm) != 0;
-
-	mSenGas = analogRead(pinAnalogGas);
-
-        Serial.print("mBtnReset = ");
-	Serial.println(mBtnReset);
-
-        Serial.print("mBtnSecurity = ");
-	Serial.println(mBtnSecurity);
-
-        Serial.print("mBtnAlarm = ");
-	Serial.println(mBtnAlarm);
-
-        Serial.print("Gas = ");
-	Serial.println(mSenGas);
+  mBtnReset = pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0);
+  mBtnAlarm = pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1);
+  mBtnSecurity = pinConsole.getValue(PIN_CHIP_IN_BTN_SECURITY_2);
+  
+  Log::d("mBtnReset", mBtnReset);
+  Log::d("mBtnSecurity", mBtnSecurity);
+  Log::d("mBtnAlarm", mBtnAlarm);
 }
 
 void ResetLeds() {
-	digitalWrite(pinLedAlarm, LOW);
-	digitalWrite(pinLedGas, LOW);
+  Log::d("ResetLeds Begin");
+  pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, false);
+  pinMonitor.setValue(PIN_CHIP_OUT_LED_GAS_6, false);
+  pinMonitor.flush();
+  Log::d("ResetLeds End");
 }
 
 bool ResetDelay(unsigned long mSec) {
+  Log::d("ResetDelay Begin");
+  for (int i = 0; i < mSec / CHECK_DELAY_TIME; i++) {
 
-	for (int i = 0; i < mSec / CHECK_DELAY_TIME; i++) {
-		if (digitalRead(pinBtnReset) != 0) {
-			Serial.println("Reset bu user");
-			return true;
-		}
-		delay(CHECK_DELAY_TIME);
-	}
-	return false;
+    pinConsole.update();
+    if (pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0)) {
+      Log::d("Reset bu user");
+      return true;
+    }
+    delay(CHECK_DELAY_TIME);
+  }
+  Log::d("ResetDelay End");
+  return false;
 }
 
-bool BlinkLed(int led, int nTimes) {
-	for (int i = 0; i < nTimes; i++) {
-		Serial.print("BlinkLed ");
-		Serial.println(i);
-		digitalWrite(led, HIGH);
-		if (ResetDelay(BLINK_DELAY_TIME)) {
-			return false;
-		}
-		digitalWrite(led, LOW);
-		if (ResetDelay(BLINK_DELAY_TIME)) {
-			return false;
-		}
-	}
-	return true;
+bool BlinkAlarm(int nTimes) {
+  for (int i = 0; i < nTimes; i++) {
+    Log::d("BlinkLed", i);
+    pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, true);
+    pinMonitor.flush();
+    if (ResetDelay(BLINK_DELAY_TIME)) {
+      pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, false);
+      pinMonitor.flush();
+      return false;
+    }
+    pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, false);
+    pinMonitor.flush();
+    if (ResetDelay(BLINK_DELAY_TIME)) {
+      pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, false);
+      pinMonitor.flush();
+      return false;
+    }
+  }
+  return true;
 }
 
 void loop() {
-        Serial.println("*******************************");
-	readData();
-	Serial.println(mCurentState);
+  unsigned long startTime = micros();
+  Log::d("***************BEGIN***************");
+  Log::d("mCurentState", mCurentState);
+  readData();
+
+  if (mBtnReset) {
+    mCurentState = REGULAR;
+  } else if (mBtnAlarm) {
+    mCurentState = ALARM;
+  } else if (mBtnSecurity) {
+    if (BlinkAlarm(5) != false) {
+      Log::d("SECURITY delay: ", SECURITY_DELAY_TIME);
+      ResetDelay(SECURITY_DELAY_TIME);
+      mCurentState = SECURITY;
+    } else {
+      Log::d("SECURITY reset by user");
+    }
+  }
+
+  mSenGas = analogRead(PIN_ANALOG_0_SEN_GAS);
+  Log::d("Gas Sensor", mSenGas);
+  if (mSenGas > GAS_MAX_VAL) {
+    Log::d("GAS_MAX_VAL",GAS_MAX_VAL);
+    mCurentState = ALARM;
+    pinMonitor.setValue(PIN_CHIP_OUT_LED_GAS_6, true);
+  }
+
+  switch (mCurentState) {
+    case REGULAR:
+      Log::d("REGULAR");
+      ResetLeds();
+      break;
+    case WARNING:
+      Log::d("WARNING");
+      break;
+    case SECURITY:
+      Log::d("SECURITY");
+      mSenMove = pinConsole.getValue(PIN_CHIP_IN_SENSOR_MOVE_4);
+      if (mSenMove) {
+        Log::d("Moving Detected");
+        if (BlinkAlarm(10) == true) {
+          mCurentState = ALARM;
+        }
+      }
+      break;
+    case ALARM:
+      Log::d("ALARM");
+      pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, true);
+      pinMonitor.flush();
+      break;
+    default:
+    Log::d("Unknown state");
+      break;
+  }
   
-	if (mBtnAlarm) {
-		mCurentState = ALARM;
-		Serial.println("ALARM");
-	}
-
-	if (mBtnSecurity) {
-		mCurentState = SECURITY;
-
-		if (BlinkLed(pinLedAlarm, 5) != false) {
-			Serial.print("SECURITY delay: ");
-			Serial.println(SECURITY_DELAY_TIME, DEC);
-			ResetDelay(SECURITY_DELAY_TIME);
-          	//digitalWrite(pinLedAlarm, HIGH);
-		} else {
-			Serial.print("SECURITY reset by user");
-		}
-	}
-
-	if (mBtnReset) {
-		mCurentState = REGULAR;
-		ResetLeds();
-		Serial.println("REGULAR");
-
-	}
-
-	if (mSenGas > GAS_MAX_VAL) {
-		mCurentState = ALARM;
-		digitalWrite(pinLedGas, HIGH);
-		Serial.println("ALARM");
-	}
-
-	switch (mCurentState) {
-	case REGULAR:
-
-		break;
-	case WARNING:
-		break;
-	case SECURITY:
-		mSenMove = digitalRead(pinMoveSensor);
-		if (mSenMove) {
-			Serial.println("mSenMove");
-          
-                         if (BlinkLed(pinLedAlarm, 10) == true) {
-			        mCurentState = ALARM;
-		          } 	
-		}
-		break;
-	case ALARM:
-		digitalWrite(pinLedAlarm, HIGH);
-		break;
-	default:
-		Serial.println("Unknown state");
-		break;
-	}
+  pinMonitor.print();
+  Log::d("****************END****************", micros()-startTime);
 }

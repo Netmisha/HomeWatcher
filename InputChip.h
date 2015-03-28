@@ -1,5 +1,6 @@
 #ifndef InputChip_h
 #define inputChip_h
+#include "config.h"
 
 class InputChip{
   

@@ -19,6 +19,7 @@ bool OutputChip::setValue(int pin, bool value){
 }
 
 bool OutputChip::setValue(int pin, int value){
+  Log::d("OutputChip::setValue",value);
   return setValue(pin ,value==0?false:true);
 }
 
@@ -48,4 +49,13 @@ bool OutputChip::flush(){
     digitalWrite(pinSCK, HIGH);
   }  
   digitalWrite(pinRCK, HIGH);
+}
+
+void OutputChip::print(){
+  Log::d("OutputChip: ");
+  for(int i=0;i<8;i++){
+    Serial.print(pins[i]);
+    Serial.print(",");
+  }
+  Serial.println("");
 }

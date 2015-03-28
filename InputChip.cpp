@@ -26,7 +26,7 @@ bool InputChip::reset(){
   return true;
 }
 void InputChip::print(){
-  Serial.print("InputChip: ");
+  Log::d("InputChip");
   for(int i=0;i<8;i++){
     Serial.print(pins[i]);
     Serial.print(",");
@@ -35,7 +35,7 @@ void InputChip::print(){
 }
 
 bool InputChip::update(){
-  Serial.println("InputChip::update()");
+  Log::d("InputChip::update()");
   long bitVal;
   reset();
   digitalWrite(pinSCK, LOW);

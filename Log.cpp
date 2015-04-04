@@ -10,7 +10,7 @@ void Log::m(char* tag, char * msg) {
   Serial.println(msg);
 }
 
-void Log::m(char* tag, char * msg, long val) {
+void Log::m(char* tag, char * msg, unsigned long val) {
   Serial.print(micros());
   Serial.print(": ");
   Serial.print(tag);
@@ -30,7 +30,7 @@ void Log::d(char * msg) {
 #endif
 }
 
-void Log::d(char * msg, long val) {
+void Log::d(char * msg, unsigned long val) {
 #ifdef LOG_DEBUG
   m("DBG: \0", msg, val);
 #endif

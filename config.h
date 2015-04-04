@@ -10,7 +10,7 @@ const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
 
 //const unsigned long SECURITY_DELAY_TIME = 20 * 1000;//Test
-const unsigned long SECURITY_DELAY_TIME = 3 * 60 * 1000;
+const unsigned long SECURITY_DELAY_TIME = 60000;
 
 const unsigned long BLINK_DELAY_TIME = 1000;
 const unsigned long CHECK_DELAY_TIME = 100;

@@ -6,15 +6,6 @@
 #include "OutputChip.h"
 #include "InputChip.h"
 
-const int pinBtnReset = 2;
-const int pinBtnSecurity = 4;
-const int pinBtnAlarm = 3;
-
-const int pinLedAlarm = 6;
-const int pinLedGas = 6;
-
-const int pinMoveSensor = 5;
-
 enum DEV_STATE {
   REGULAR = 0,
   SECURITY,
@@ -28,6 +19,8 @@ bool mBtnReset = false;
 bool mBtnSecurity = false;
 bool mBtnAlarm = false;
 
+long mReguilarIteration = 0;
+
 int mSenGas = 0;
 int mSenMove = 0;
 
@@ -38,8 +31,6 @@ InputChip pinConsole(PIN_CHIP_IN_LATCH, PIN_CHIP_IN_CLOCK, PIN_CHIP_IN_DATA);
 void setup() {
   Log::init();
   Log::d("Setup Begin");
-  pinMode(pinLedAlarm, OUTPUT);
-  pinMode(pinLedGas, OUTPUT);
   Log::d("Setup End");
 }
 
@@ -65,11 +56,13 @@ void ResetLeds() {
 }
 
 bool ResetDelay(unsigned long mSec) {
-  Log::d("ResetDelay Begin");
-  for (int i = 0; i < mSec / CHECK_DELAY_TIME; i++) {
+  Log::d("ResetDelay Begin", mSec);
+  unsigned long endTime = millis()+mSec;
+  while(millis() < endTime){
+    Log::d("Time remain: ", endTime - millis());
     pinConsole.update();
     if (pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0)) {
-      Log::d("Reset bu user");
+      Log::d("Reset by user");
       return true;
     }
     delay(CHECK_DELAY_TIME);
@@ -78,7 +71,7 @@ bool ResetDelay(unsigned long mSec) {
   return false;
 }
 
-bool BlinkAlarm(int nTimes) {
+bool BlinkAlarm(unsigned int nTimes) {
   for (int i = 0; i < nTimes; i++) {
     Log::d("BlinkLed", i);
     pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, true);
@@ -101,13 +94,16 @@ bool BlinkAlarm(int nTimes) {
 
 void loop() {
   unsigned long startTime = micros();
-  delay(1000);
+  #ifdef LOG_DEBUG
+    delay(1000);
+  #endif
+
   Log::d("***************BEGIN***************");
   Log::d("mCurentState", mCurentState);
+  Log::d("mReguilarIteration", mReguilarIteration);
   readData();
 
   Log::d("isAT", mobManager.isAT());
-
   if (mBtnReset) {
     mCurentState = REGULAR;
   } else if (mBtnAlarm) {
@@ -115,8 +111,10 @@ void loop() {
   } else if (mBtnSecurity) {
     if (BlinkAlarm(5) != false) {
       Log::d("SECURITY delay: ", SECURITY_DELAY_TIME);
-      ResetDelay(SECURITY_DELAY_TIME);
-      mCurentState = SECURITY;
+      if(ResetDelay(SECURITY_DELAY_TIME)==false){// if not reseted by user
+        mCurentState = SECURITY;
+      }
+      
     } else {
       Log::d("SECURITY reset by user");
     }
@@ -128,6 +126,12 @@ void loop() {
     Log::d("GAS_MAX_VAL", GAS_MAX_VAL);
     mCurentState = ALARM;
     pinMonitor.setValue(PIN_CHIP_OUT_LED_GAS_6, true);
+    if (mReguilarIteration>5)
+    {
+      mReguilarIteration = 0;
+      mobManager.sendGas();
+    }
+
   }
 
   switch (mCurentState) {
@@ -152,12 +156,21 @@ void loop() {
       Log::d("ALARM");
       pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, true);
       pinMonitor.flush();
+
+      if (mReguilarIteration>5)
+      {
+        mReguilarIteration = 0;
+        mobManager.sendAlarm();
+      }
       break;
     default:
       Log::d("Unknown state");
       break;
   }
 
+  if (mCurentState!=ALARM){
+    mReguilarIteration++;
+  }
   pinMonitor.print();
   Log::d("****************END****************", micros() - startTime);
 }

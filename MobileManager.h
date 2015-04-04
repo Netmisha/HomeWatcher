@@ -25,5 +25,6 @@ class MobileManager {
     bool isAT();
     void sendDelay();
     bool sendAlarm();
+    bool sendGas();
 };
 #endif

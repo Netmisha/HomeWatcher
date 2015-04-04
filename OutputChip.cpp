@@ -41,7 +41,7 @@ bool OutputChip::reset() {
 }
 
 bool OutputChip::flush() {
-  Serial.println("OutputChip::flush()");
+  Log::d("OutputChip::flush()");
   digitalWrite(pinRCK, LOW);
   for (int i = 7; i >= 0; i--) {
     digitalWrite(pinSCK, LOW);

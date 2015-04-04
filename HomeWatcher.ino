@@ -61,7 +61,7 @@ bool ResetDelay(unsigned long mSec) {
   while(millis() < endTime){
     Log::d("Time remain: ", endTime - millis());
     pinConsole.update();
-    if (pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0)) {
+    if (pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0) || pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1)) {
       Log::d("Reset by user");
       return true;
     }
@@ -108,15 +108,26 @@ void loop() {
     mCurentState = REGULAR;
   } else if (mBtnAlarm) {
     mCurentState = ALARM;
-  } else if (mBtnSecurity) {
+  } else if (mBtnSecurity && mCurentState != ALARM) {
     if (BlinkAlarm(5) != false) {
       Log::d("SECURITY delay: ", SECURITY_DELAY_TIME);
       if(ResetDelay(SECURITY_DELAY_TIME)==false){// if not reseted by user
         mCurentState = SECURITY;
+      }else{
+        if (pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1))
+        {
+          Log::d("Switch to ALARM");
+          mCurentState = ALARM;
+        } 
       }
       
     } else {
       Log::d("SECURITY reset by user");
+      if (pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1))
+        {
+          Log::d("Switch to ALARM");
+          mCurentState = ALARM;
+        }
     }
   }
 

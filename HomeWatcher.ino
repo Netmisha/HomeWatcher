@@ -19,7 +19,7 @@ bool mBtnReset = false;
 bool mBtnSecurity = false;
 bool mBtnAlarm = false;
 
-long mReguilarIteration = 0;
+long mReguilarIteration = REGULAR_CHECK;
 
 int mSenGas = 0;
 int mSenMove = 0;
@@ -103,7 +103,6 @@ void loop() {
   Log::d("mReguilarIteration", mReguilarIteration);
   readData();
 
-  Log::d("isAT", mobManager.isAT());
   if (mBtnReset) {
     mCurentState = REGULAR;
   } else if (mBtnAlarm) {
@@ -137,7 +136,7 @@ void loop() {
     Log::d("GAS_MAX_VAL", GAS_MAX_VAL);
     mCurentState = ALARM;
     pinMonitor.setValue(PIN_CHIP_OUT_LED_GAS_6, true);
-    if (mReguilarIteration>5)
+    if (mReguilarIteration>=REGULAR_CHECK)
     {
       mReguilarIteration = 0;
       mobManager.sendGas();
@@ -168,7 +167,7 @@ void loop() {
       pinMonitor.setValue(PIN_CHIP_OUT_LED_ALARM_7, true);
       pinMonitor.flush();
 
-      if (mReguilarIteration>5)
+      if (mReguilarIteration>=REGULAR_CHECK)
       {
         mReguilarIteration = 0;
         mobManager.sendAlarm();

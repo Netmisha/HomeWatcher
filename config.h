@@ -15,6 +15,8 @@ const unsigned long SECURITY_DELAY_TIME = 60000;
 const unsigned long BLINK_DELAY_TIME = 1000;
 const unsigned long CHECK_DELAY_TIME = 100;
 
+const int REGULAR_CHECK = 2;
+
 const int PIN_AVAILABLE_0 = 0;
 const int PIN_AVAILABLE_1 = 1;
 const int PIN_MOBILE_TX = 2;

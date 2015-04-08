@@ -19,10 +19,10 @@ const int REGULAR_CHECK = 2;
 
 const int PIN_AVAILABLE_0 = 0;
 const int PIN_AVAILABLE_1 = 1;
-const int PIN_MOBILE_TX = 2;
-const int PIN_MOBILE_RX = 3;
-const int PIN_AVAILABLE_4 = 4;
-const int PIN_AVAILABLE_5 = 5;
+const int PIN_MOBILE_TX_2 = 2;
+const int PIN_MOBILE_RX_3 = 3;
+const int PIN_BROKEN_4 = 4;
+const int PIN_BUZZER_5 = 5;
 const int PIN_AVAILABLE_6 = 6;
 const int PIN_CHIP_IN_LATCH = 7;
 const int PIN_CHIP_IN_CLOCK = 8;

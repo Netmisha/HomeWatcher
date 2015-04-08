@@ -24,9 +24,23 @@ long mReguilarIteration = REGULAR_CHECK;
 int mSenGas = 0;
 int mSenMove = 0;
 
-MobileManager mobManager(PIN_MOBILE_RX, PIN_MOBILE_TX);
+MobileManager mobManager(PIN_MOBILE_RX_3, PIN_MOBILE_TX_2);
 OutputChip pinMonitor(PIN_CHIP_OUT_LATCH, PIN_CHIP_OUT_CLOCK, PIN_CHIP_OUT_DATA);
 InputChip pinConsole(PIN_CHIP_IN_LATCH, PIN_CHIP_IN_CLOCK, PIN_CHIP_IN_DATA);
+
+void SerenaTone(int nTimes){
+  for(int n=0;n<nTimes;n++){
+    for( int i=1; i<999; i++)
+    { 
+      tone(PIN_BUZZER_5,500+i*3,2000);
+    }
+    for( int i=999; i>1; i--)
+    { 
+      tone(PIN_BUZZER_5,500+i*3,2000);
+    }
+  }
+  noTone(PIN_BUZZER_5);
+}
 
 void setup() {
   Log::init();
@@ -172,6 +186,8 @@ void loop() {
         mReguilarIteration = 0;
         mobManager.sendAlarm();
       }
+      
+      SerenaTone(1);
       break;
     default:
       Log::d("Unknown state");

@@ -18,6 +18,7 @@ int mCurentState = REGULAR;
 bool mBtnReset = false;
 bool mBtnSecurity = false;
 bool mBtnAlarm = false;
+bool mSenDoor = false;
 
 long mReguilarIteration = REGULAR_CHECK;
 
@@ -46,15 +47,22 @@ void setup() {
   Log::init();
   Log::d("Setup Begin");
   Log::d("Setup End");
+  pinMode(PIN_DOOR_SENSOR_ACTIVATOR, OUTPUT);
 }
 
-void readData() {
+void readData() { 
+  digitalWrite(PIN_DOOR_SENSOR_ACTIVATOR, HIGH); 
   pinConsole.update();
   pinConsole.print();
 
   mBtnReset = pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0);
   mBtnAlarm = pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1);
   mBtnSecurity = pinConsole.getValue(PIN_CHIP_IN_BTN_SECURITY_2);
+  
+  mSenDoor = pinConsole.getValue(PIN_CHIP_IN_DOOR_SENSOR_5);
+  Log::d("isDoorSensorDetected: ", mSenDoor);
+  digitalWrite(PIN_DOOR_SENSOR_ACTIVATOR, LOW);
+  
 
   Log::d("mBtnReset", mBtnReset);
   Log::d("mBtnSecurity", mBtnSecurity);
@@ -156,6 +164,12 @@ void loop() {
       mobManager.sendGas();
     }
 
+  }
+  
+  if(mSenDoor){
+    Log::d("isDoorSensorDetected");
+    //SerenaTone(1);
+    //tone(PIN_BUZZER_5,200,50);
   }
 
   switch (mCurentState) {

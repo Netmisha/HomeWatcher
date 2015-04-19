@@ -21,7 +21,7 @@ const int PIN_AVAILABLE_0 = 0;
 const int PIN_AVAILABLE_1 = 1;
 const int PIN_MOBILE_TX_2 = 2;
 const int PIN_MOBILE_RX_3 = 3;
-const int PIN_BROKEN_4 = 4;
+const int PIN_DOOR_SENSOR_ACTIVATOR = 4;
 const int PIN_BUZZER_5 = 5;
 const int PIN_AVAILABLE_6 = 6;
 const int PIN_CHIP_IN_LATCH = 7;
@@ -38,7 +38,7 @@ const int PIN_CHIP_IN_BTN_ALARM_1 = 1;
 const int PIN_CHIP_IN_BTN_SECURITY_2 = 2;
 const int PIN_CHIP_IN_RMT_BLIDES_3 = 3;
 const int PIN_CHIP_IN_SENSOR_MOVE_4 = 4;
-const int PIN_CHIP_IN_AVAILABLE_5 = 5;
+const int PIN_CHIP_IN_DOOR_SENSOR_5 = 5;
 const int PIN_CHIP_IN_AVAILABLE_6 = 6;
 const int PIN_CHIP_IN_AVAILABLE_7 = 7;
 

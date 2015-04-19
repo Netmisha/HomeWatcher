@@ -166,16 +166,15 @@ void loop() {
 
   }
   
-  if(mSenDoor){
-    Log::d("isDoorSensorDetected");
-    //SerenaTone(1);
-    //tone(PIN_BUZZER_5,200,50);
-  }
-
   switch (mCurentState) {
     case REGULAR:
       Log::d("REGULAR");
       ResetLeds();
+      if(mSenDoor){
+        Log::d("isDoorSensorDetected");
+        //SerenaTone(1);
+        tone(PIN_BUZZER_5, 200, 30);
+      }
       break;
     case WARNING:
       Log::d("WARNING");
@@ -183,7 +182,7 @@ void loop() {
     case SECURITY:
       Log::d("SECURITY");
       mSenMove = pinConsole.getValue(PIN_CHIP_IN_SENSOR_MOVE_4);
-      if (mSenMove) {
+      if (mSenMove || mSenDoor) {
         Log::d("Moving Detected");
         if (BlinkAlarm(10) == true) {
           mCurentState = ALARM;

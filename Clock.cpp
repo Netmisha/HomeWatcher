@@ -43,3 +43,16 @@ byte Clock::bcdToDec(byte val)
 {
  return ( (val/16*10) + (val%16) );
 }
+
+void Clock::setupClock(){
+  Wire.beginTransmission(DS1307_I2C_ADDRESS);
+  Wire.write(decToBcd(0));
+  Wire.write(decToBcd(mSecond));
+  Wire.write(decToBcd(mMinute));
+  Wire.write(decToBcd(mHour));
+  Wire.write(decToBcd(mDayOfWeek));
+  Wire.write(decToBcd(mDayOfMonth));
+  Wire.write(decToBcd(mMonth));
+  Wire.write(decToBcd(mYear));
+  Wire.endTransmission();
+}

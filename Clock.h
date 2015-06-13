@@ -7,6 +7,8 @@
 class Clock {
     byte decToBcd(byte val);
 	byte bcdToDec(byte val);
+
+	void setupClock();
   public:
   	byte mSecond;
     byte mMinute;

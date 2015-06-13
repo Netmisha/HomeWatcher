@@ -1,10 +1,12 @@
 #include <LiquidCrystal.h>
 
 #include "config.h"
+#include <Wire.h>
 #include <SoftwareSerial.h>
 #include "MobileManager.h"
 #include "OutputChip.h"
 #include "InputChip.h"
+#include "Clock.h"
 
 enum DEV_STATE {
   REGULAR = 0,

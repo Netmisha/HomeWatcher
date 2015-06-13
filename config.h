@@ -6,6 +6,35 @@
 
 //#define LOG_DEBUG;
 
+//Output Pins
+//1.GND
+//2.VCC
+//3.RX
+//4.TX
+//5.DTR
+//6.--
+//7.TX Phone
+//8.RX Phone
+//9.GAS
+//10.Move sensor
+//11. Light
+//12. --
+//13. --
+//14. Door Sensor out
+//15. Door Sensor in
+//16. 
+//17. 
+//18. 
+//19. 
+//20. 
+//21. 
+//22. 
+//23. 
+//24. 
+//25. 
+
+//#define LOG_DEBUG;
+
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
 

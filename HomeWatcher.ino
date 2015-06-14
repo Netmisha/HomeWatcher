@@ -44,6 +44,7 @@ void SerenaTone(int nTimes){
 }
 
 void setup() {
+  Wire.begin();
   Log::init();
   Log::d("Setup Begin");
   Log::d("Setup End");
@@ -119,6 +120,10 @@ void loop() {
   #ifdef LOG_DEBUG
     delay(1000);
   #endif
+  
+  Clock cl;
+  cl.update();
+  cl.print();
 
   Log::d("***************BEGIN***************");
   Log::d("mCurentState", mCurentState);

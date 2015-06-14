@@ -34,7 +34,7 @@ bool OutputChip::setLow(int pin) {
   return setValue(pin, LOW);
 }
 bool OutputChip::reset() {
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < PIN_COUNT; i++) {
     pins[i] = false;
   }
   return true;
@@ -43,7 +43,7 @@ bool OutputChip::reset() {
 bool OutputChip::flush() {
   Log::d("OutputChip::flush()");
   digitalWrite(pinRCK, LOW);
-  for (int i = 7; i >= 0; i--) {
+  for (int i = PIN_COUNT-1; i >= 0; i--) {
     digitalWrite(pinSCK, LOW);
     digitalWrite(pinSI, pins[i] == true ? HIGH : LOW);
     digitalWrite(pinSCK, HIGH);
@@ -53,7 +53,7 @@ bool OutputChip::flush() {
 
 void OutputChip::print() {
   Log::d("OutputChip: ");
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < PIN_COUNT; i++) {
     Serial.print(pins[i]);
     Serial.print(",");
   }

@@ -3,8 +3,8 @@
 #include "config.h"
 
 class InputChip {
-
-    bool pins[8];
+    static const int PIN_COUNT = 8;
+    bool pins[PIN_COUNT];
 
 
     int pinRCK;//Latch

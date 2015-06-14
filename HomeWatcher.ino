@@ -1,5 +1,3 @@
-#include <LiquidCrystal.h>
-
 #include "config.h"
 #include <Wire.h>
 #include <SoftwareSerial.h>

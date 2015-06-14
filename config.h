@@ -22,9 +22,9 @@
 //13. --
 //14. Door Sensor out
 //15. Door Sensor in
-//16. 
-//17. 
-//18. 
+//16. Remote Data
+//17. Remote Clock
+//18. Remote Latch
 //19. 
 //20. 
 //21. 
@@ -80,6 +80,15 @@ const int PIN_CHIP_OUT_AVAILABLE_4 = 4;
 const int PIN_CHIP_OUT_AVAILABLE_5 = 5;
 const int PIN_CHIP_OUT_LED_GAS_6 = 6;
 const int PIN_CHIP_OUT_LED_ALARM_7 = 7;
+
+const int PIN_CHIP_REMOTE_0_LIGHT = 8;
+const int PIN_CHIP_REMOTE_1_FILTER = 9;
+const int PIN_CHIP_REMOTE_AVAILABLE_2 = 10;
+const int PIN_CHIP_REMOTE_AVAILABLE_3 = 11;
+const int PIN_CHIP_REMOTE_AVAILABLE_4 = 12;
+const int PIN_CHIP_REMOTE_AVAILABLE_5 = 13;
+const int PIN_CHIP_REMOTE_AVAILABLE_6 = 14;
+const int PIN_CHIP_REMOTE_AVAILABLE_7 = 15;
 
 const int PIN_ANALOG_0_SEN_GAS = 0;
 const int PIN_ANALOG_AVAILABLE_1 = 1;

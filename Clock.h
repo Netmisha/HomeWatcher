@@ -6,11 +6,10 @@
 
 class Clock {
     byte decToBcd(byte val);
-	byte bcdToDec(byte val);
-
-	void setupClock();
+    byte bcdToDec(byte val);
+    void setupClock();
   public:
-  	byte mSecond;
+    byte mSecond;
     byte mMinute;
     byte mHour;
     byte mDayOfWeek;
@@ -18,7 +17,6 @@ class Clock {
     byte mMonth;
     byte mYear;
     Clock();
-
     bool update();
     void print();
 };

@@ -2,10 +2,17 @@
 #include "config.h"
 #include "Wire.h"
 Clock::Clock(){
-
+    mSecond = 0;
+    mMinute = 0;
+    mHour = 0;
+    mDayOfWeek = 0;
+    mDayOfMonth = 0;
+    mMonth = 0;
+    mYear = 0;
 }
 
 bool Clock::update(){
+        Serial.println("Clock::update");
 	Wire.beginTransmission(DS1307_I2C_ADDRESS);
 	Wire.write(decToBcd(0));
 	Wire.endTransmission();
@@ -20,6 +27,7 @@ bool Clock::update(){
 }
 
 void Clock::print(){
+	Serial.print("Time: ");
  	Serial.print(mHour, DEC);
  	Serial.print(":");
  	Serial.print(mMinute, DEC);

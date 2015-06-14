@@ -11,10 +11,14 @@ OutputChip::OutputChip(int RCK, int SCK, int SI):
   pinMode(pinSI, OUTPUT);
 
   reset();
+  mDataChanged = true;
 }
 
 bool OutputChip::setValue(int pin, bool value) {
-  pins[pin] = value;
+  if(pins[pin] != value){
+    pins[pin] = value;
+    mDataChanged = true;
+  }
   return true;
 }
 
@@ -35,13 +39,17 @@ bool OutputChip::setLow(int pin) {
 }
 bool OutputChip::reset() {
   for (int i = 0; i < PIN_COUNT; i++) {
-    pins[i] = false;
+    setValue(i, false);
   }
   return true;
 }
 
 bool OutputChip::flush() {
   Log::d("OutputChip::flush()");
+  if(!mDataChanged){
+    Log::d("No data was changed");
+    return false;
+  }
   digitalWrite(pinRCK, LOW);
   for (int i = PIN_COUNT-1; i >= 0; i--) {
     digitalWrite(pinSCK, LOW);
@@ -49,6 +57,7 @@ bool OutputChip::flush() {
     digitalWrite(pinSCK, HIGH);
   }
   digitalWrite(pinRCK, HIGH);
+  mDataChanged = false;
 }
 
 void OutputChip::print() {

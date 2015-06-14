@@ -6,12 +6,11 @@ class OutputChip {
     static const int PIN_COUNT = 16;
     bool pins[PIN_COUNT];
 
-
     int pinRCK;//Latch
     int pinSCK;//SHIFT CLOCK
     int pinSI;//Data
-
-
+    
+    bool mDataChanged;
 
   public:
     OutputChip(int RCK, int SCK, int SI);

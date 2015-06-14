@@ -122,23 +122,24 @@ void onMinute(){
   clk.update();
   clk.print();
 
+  pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn off
+  pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn off
   if (clk.mHour >= 8 && clk.mHour < 23)
   {
-
     if (clk.mHour == 8  || clk.mHour > 21)
     {
-      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);
+      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn on
     }else{
-      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);
+      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn off
     }
 
 
     //Filter logic
     if (clk.mMinute > 0 && clk.mMinute<15)
     {
-      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);    
+      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn On  
     }else{
-      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);
+      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn off
     }
   }
   pinMonitor.flush();

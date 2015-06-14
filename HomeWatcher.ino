@@ -29,6 +29,7 @@ MobileManager mobManager(PIN_MOBILE_RX_3, PIN_MOBILE_TX_2);
 OutputChip pinMonitor(PIN_CHIP_OUT_LATCH, PIN_CHIP_OUT_CLOCK, PIN_CHIP_OUT_DATA);
 InputChip pinConsole(PIN_CHIP_IN_LATCH, PIN_CHIP_IN_CLOCK, PIN_CHIP_IN_DATA);
 
+Clock clk;
 void SerenaTone(int nTimes){
   for(int n=0;n<nTimes;n++){
     for( int i=1; i<999; i++)
@@ -54,7 +55,6 @@ void setup() {
 void readData() { 
   digitalWrite(PIN_DOOR_SENSOR_ACTIVATOR, HIGH); 
   pinConsole.update();
-  pinConsole.print();
 
   mBtnReset = pinConsole.getValue(PIN_CHIP_IN_BTN_RESET_0);
   mBtnAlarm = pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1);
@@ -115,15 +115,45 @@ bool BlinkAlarm(unsigned int nTimes) {
   return true;
 }
 
+unsigned long lastTime = 0;
+
+void onMinute(){
+  Log::d("onMinute");
+  clk.update();
+  clk.print();
+
+  if (clk.mHour >= 8 && clk.mHour < 23)
+  {
+
+    if (clk.mHour == 8  || clk.mHour > 21)
+    {
+      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);
+    }else{
+      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);
+    }
+
+
+    //Filter logic
+    if (clk.mMinute > 0 && clk.mMinute<15)
+    {
+      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);    
+    }else{
+      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);
+    }
+  }
+  pinMonitor.flush();
+}
+
 void loop() {
-  unsigned long startTime = micros();
+  unsigned long startTime = millis();
+  if ((startTime - lastTime)>1000)
+  {
+    lastTime = startTime;
+    onMinute();
+  }
   #ifdef LOG_DEBUG
     delay(1000);
   #endif
-  
-  Clock cl;
-  cl.update();
-  cl.print();
 
   Log::d("***************BEGIN***************");
   Log::d("mCurentState", mCurentState);
@@ -215,6 +245,4 @@ void loop() {
   if (mCurentState!=ALARM){
     mReguilarIteration++;
   }
-  pinMonitor.print();
-  Log::d("****************END****************", micros() - startTime);
 }

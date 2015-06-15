@@ -117,8 +117,8 @@ bool BlinkAlarm(unsigned int nTimes) {
 
 unsigned long lastTime = 0;
 
-void onMinute(){
-  Log::d("onMinute");
+void onSecond(){
+  Log::d("onSecond");
   clk.update();
   clk.print();
 
@@ -147,10 +147,10 @@ void onMinute(){
 
 void loop() {
   unsigned long startTime = millis();
-  if ((startTime - lastTime)>1000)
+  if (abs(startTime - lastTime)>1000)
   {
     lastTime = startTime;
-    onMinute();
+    onSecond();
   }
   #ifdef LOG_DEBUG
     delay(1000);

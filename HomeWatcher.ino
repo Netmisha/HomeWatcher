@@ -126,10 +126,13 @@ void onSecond(){
   pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn off
   if (clk.mHour >= 8 && clk.mHour < 23)
   {
+    Log::d("Day time");
     if (clk.mHour == 8  || clk.mHour > 21)
     {
+      Log::d("Light on");
       pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn on
     }else{
+      Log::d("Light off");
       pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn off
     }
 
@@ -137,10 +140,14 @@ void onSecond(){
     //Filter logic
     if (clk.mMinute > 0 && clk.mMinute<15)
     {
+      Log::d("Filter on");
       pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn On  
     }else{
+      Log::d("Filter off");
       pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn off
     }
+  }else{
+    Log::d("Night time");
   }
   pinMonitor.flush();
 }

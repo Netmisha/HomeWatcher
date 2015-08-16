@@ -48,18 +48,23 @@ const int REGULAR_CHECK = 2;
 
 const int PIN_AVAILABLE_0 = 0;
 const int PIN_AVAILABLE_1 = 1;
-const int PIN_MOBILE_TX_2 = 2;
+
 const int PIN_MOBILE_RX_3 = 3;
 const int PIN_DOOR_SENSOR_ACTIVATOR = 4;
-const int PIN_BUZZER_5 = 5;
+const int PIN_BUZZER_5 = 9;
 const int PIN_AVAILABLE_6 = 6;
-const int PIN_CHIP_IN_LATCH = 7;
-const int PIN_CHIP_IN_CLOCK = 8;
-const int PIN_CHIP_IN_DATA = 9;
-const int PIN_AVAILABLE_10 = 10;
-const int PIN_CHIP_OUT_DATA = 11;
-const int PIN_CHIP_OUT_CLOCK = 12;
-const int PIN_CHIP_OUT_LATCH = 13;
+
+const int PIN_CHIP_OUT_DATA = 8;
+const int PIN_CHIP_OUT_CLOCK = 6;
+const int PIN_CHIP_OUT_LATCH = 7;
+
+const int PIN_CHIP_IN_DATA = 10;
+const int PIN_CHIP_IN_LATCH = 11;
+const int PIN_CHIP_IN_CLOCK = 12;
+
+const int PIN_MOBILE_TX_2 = 13;
+
+
 
 
 const int PIN_CHIP_IN_BTN_RESET_0 = 0;
@@ -78,8 +83,8 @@ const int PIN_CHIP_OUT_AVAILABLE_2 = 2;
 const int PIN_CHIP_OUT_AVAILABLE_3 = 3;
 const int PIN_CHIP_OUT_AVAILABLE_4 = 4;
 const int PIN_CHIP_OUT_AVAILABLE_5 = 5;
-const int PIN_CHIP_OUT_LED_GAS_6 = 6;
-const int PIN_CHIP_OUT_LED_ALARM_7 = 7;
+const int PIN_CHIP_OUT_LED_GAS_6 = 1;
+const int PIN_CHIP_OUT_LED_ALARM_7 = 0;
 
 const int PIN_CHIP_REMOTE_0_LIGHT = 8;
 const int PIN_CHIP_REMOTE_1_FILTER = 9;

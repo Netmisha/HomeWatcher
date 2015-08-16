@@ -18,6 +18,8 @@ bool OutputChip::setValue(int pin, bool value) {
   if(pins[pin] != value){
     pins[pin] = value;
     mDataChanged = true;
+    Log::d("OutputChip::setValue mDataChanged");
+    print();
   }
   return true;
 }
@@ -45,11 +47,11 @@ bool OutputChip::reset() {
 }
 
 bool OutputChip::flush() {
-  Log::d("OutputChip::flush()");
   if(!mDataChanged){
-    Log::d("No data was changed");
+    Log::d("OutputChip::flush() no data changed");
     return false;
   }
+  Log::d("OutputChip::flush() flushing");
   digitalWrite(pinRCK, LOW);
   for (int i = PIN_COUNT-1; i >= 0; i--) {
     digitalWrite(pinSCK, LOW);
@@ -58,6 +60,7 @@ bool OutputChip::flush() {
   }
   digitalWrite(pinRCK, HIGH);
   mDataChanged = false;
+  print();
 }
 
 void OutputChip::print() {

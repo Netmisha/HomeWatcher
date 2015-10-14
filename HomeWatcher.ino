@@ -51,8 +51,8 @@ void setup() {
   
   pinMode(PIN_DOOR_SENSOR_ACTIVATOR, OUTPUT);
   
-  pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn off
-  pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn off
+  pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn off
+  pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn off
   
   pinMonitor.flush();
   
@@ -131,28 +131,28 @@ void onSecond(){
 
   if (clk.mHour >= 8 && clk.mHour < 23)
   {
-    Log::d("Day time");
-    if (clk.mHour == 8  || clk.mHour > 21)
+    Log::i("Day time");
+    if (clk.mHour == 8  || clk.mHour >= 19)
     {
-      Log::d("Light on");
-      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn on
+      Log::i("Light on");
+      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn on
     }else{
-      Log::d("Light off");
-      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn off
+      Log::i("Light off");
+      pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn off
     }
 
-
-    //Filter logic
-    if (clk.mMinute >= 0 && clk.mMinute<15)
+    if (clk.mMinute >= 0 && clk.mMinute < 15)
     {
-      Log::d("Filter on");
-      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn On  
+      Log::i("Filter on");
+      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn On  
     }else{
-      Log::d("Filter off");
-      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn off
+      Log::i("Filter off");
+      pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn off
     }
   }else{
-    Log::d("Night time");
+    Log::i("Night time");
+    pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn off
+    pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn off
   }
   pinMonitor.flush();
 }

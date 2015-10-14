@@ -11,6 +11,7 @@ class Log {
     static void w(char * msg);
     static void d(char * msg);
     static void d(char * msg, unsigned long val);
+    static void i(char * msg);
 };
 
 #endif//Log_h

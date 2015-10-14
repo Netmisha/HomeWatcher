@@ -35,3 +35,7 @@ void Log::d(char * msg, unsigned long val) {
   m("DBG: \0", msg, val);
 #endif
 }
+
+void Log::i(char * msg) {
+  m("INF: \0", msg);
+}

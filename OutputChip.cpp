@@ -53,20 +53,20 @@ bool OutputChip::flush() {
   }
   Log::d("OutputChip::flush() flushing");
   digitalWrite(pinRCK, HIGH);
-  delayMicroseconds(PULSE_WIDTH_USEC);
+  delayMicroseconds(PULSE_WIDTH_WRITE_USEC);
   digitalWrite(pinRCK, LOW);
   digitalWrite(pinRCK, LOW);
-  delayMicroseconds(PULSE_WIDTH_USEC);
+  delayMicroseconds(PULSE_WIDTH_WRITE_USEC);
   for (int i = PIN_COUNT-1; i >= 0; i--) {
     digitalWrite(pinSCK, LOW);
-    delayMicroseconds(PULSE_WIDTH_USEC);
+    delayMicroseconds(PULSE_WIDTH_WRITE_USEC);
     digitalWrite(pinSI, pins[i] == true ? HIGH : LOW);
-    delayMicroseconds(PULSE_WIDTH_USEC);;
+    delayMicroseconds(PULSE_WIDTH_WRITE_USEC);;
     digitalWrite(pinSCK, HIGH);
-    delayMicroseconds(PULSE_WIDTH_USEC);
+    delayMicroseconds(PULSE_WIDTH_WRITE_USEC);
   }
   digitalWrite(pinRCK, HIGH);
-  delay(PULSE_WIDTH_USEC);
+  delay(PULSE_WIDTH_WRITE_USEC);
   digitalWrite(pinRCK, LOW);
   digitalWrite(pinSCK, LOW);
   digitalWrite(pinSI, LOW);
@@ -77,12 +77,11 @@ bool OutputChip::flush() {
 void OutputChip::print() {
   Log::d("OutputChip: ");
   for (int i = 0; i < PIN_COUNT; i++) {
-    Serial.print(pins[i]);
+    Log::d("",pins[i]);
     if(i==7){
-      Serial.print("\n");
+      Log::d("\n");
     }else{
-      Serial.print(",");
+      Log::d(",");
     }
   }
-  Serial.println("");
 }

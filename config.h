@@ -33,8 +33,6 @@
 //24. 
 //25. 
 
-//#define LOG_DEBUG;
-
 const int GAS_MAX_VAL = 500;
 const int MOVE_MAX_VAL = 500;
 
@@ -71,10 +69,10 @@ const int PIN_CHIP_IN_BTN_RESET_0 = 0;
 const int PIN_CHIP_IN_BTN_ALARM_1 = 1;
 const int PIN_CHIP_IN_BTN_SECURITY_2 = 2;
 const int PIN_CHIP_IN_RMT_BLIDES_3 = 3;
-const int PIN_CHIP_IN_SENSOR_MOVE_4 = 4;
-const int PIN_CHIP_IN_DOOR_SENSOR_5 = 5;
-const int PIN_CHIP_IN_AVAILABLE_6 = 6;
-const int PIN_CHIP_IN_AVAILABLE_7 = 7;
+const int PIN_CHIP_IN_BTN_A = 4;
+const int PIN_CHIP_IN_BTN_B = 5;
+const int PIN_CHIP_IN_BTN_C = 6;
+const int PIN_CHIP_IN_BTN_D = 7;
 
 
 const int PIN_CHIP_OUT_AVAILABLE_0 = 0;
@@ -103,7 +101,8 @@ const int PIN_ANALOG_AVAILABLE_4 = 4;
 const int PIN_ANALOG_AVAILABLE_5 = 5;
 const int PIN_ANALOG_AVAILABLE_6 = 6;
 
-#define PULSE_WIDTH_USEC   10
+#define PULSE_WIDTH_WRITE_USEC   10
+#define PULSE_WIDTH_READ_USEC   5
 
 
 #endif

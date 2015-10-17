@@ -38,7 +38,7 @@ bool InputChip::update() {
   reset();
   digitalWrite(pinSCK, LOW);
   digitalWrite(pinRCK, LOW);
-  delayMicroseconds(PULSE_WIDTH_USEC);
+  delayMicroseconds(PULSE_WIDTH_READ_USEC);
   digitalWrite(pinRCK, HIGH);
 
   for (int i = 7; i >= 0; i--) {
@@ -46,7 +46,7 @@ bool InputChip::update() {
     pins[i] = ((val == 0) ? LOW : HIGH);
 
     digitalWrite(pinSCK, LOW);
-    delayMicroseconds(PULSE_WIDTH_USEC);
+    delayMicroseconds(PULSE_WIDTH_READ_USEC);
     digitalWrite(pinSCK, HIGH);
   }
 

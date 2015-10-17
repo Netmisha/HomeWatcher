@@ -20,6 +20,14 @@ bool mBtnSecurity = false;
 bool mBtnAlarm = false;
 bool mSenDoor = false;
 
+bool mRemBtnA = false;
+bool mRemBtnB = false;
+bool mRemBtnC = false;
+bool mRemBtnD = false;
+
+bool mLightOn = false;
+bool mFilterOn = false;
+
 long mReguilarIteration = REGULAR_CHECK;
 
 int mSenGas = 0;
@@ -67,8 +75,27 @@ void readData() {
   mBtnAlarm = pinConsole.getValue(PIN_CHIP_IN_BTN_ALARM_1);
   mBtnSecurity = pinConsole.getValue(PIN_CHIP_IN_BTN_SECURITY_2);
   
-  mSenDoor = pinConsole.getValue(PIN_CHIP_IN_DOOR_SENSOR_5);
-  Log::d("isDoorSensorDetected: ", mSenDoor);
+  mRemBtnA = pinConsole.getValue(PIN_CHIP_IN_BTN_A);
+  mRemBtnB = pinConsole.getValue(PIN_CHIP_IN_BTN_B);
+  mRemBtnC = pinConsole.getValue(PIN_CHIP_IN_BTN_C);
+  mRemBtnD = pinConsole.getValue(PIN_CHIP_IN_BTN_D);
+  
+  if(mRemBtnA){
+    mBtnAlarm = true;
+  }
+  
+  if(mRemBtnC){
+    mLightOn = !mLightOn;
+  }
+  
+  if(mRemBtnB){
+    mFilterOn = !mFilterOn;
+  }
+  
+  Log::d("mRemBtnA: ", mRemBtnA);
+  Log::d("mRemBtnB: ", mRemBtnB);
+  Log::d("mRemBtnC: ", mRemBtnC);
+  Log::d("mRemBtnD: ", mRemBtnD);
   digitalWrite(PIN_DOOR_SENSOR_ACTIVATOR, LOW);
   
 
@@ -154,6 +181,15 @@ void onSecond(){
     pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn off
     pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn off
   }
+  
+  if(mLightOn){
+    pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn on
+  }
+  
+  if(mFilterOn){
+    pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn On
+  }
+  
   pinMonitor.flush();
 }
 
@@ -228,7 +264,7 @@ void loop() {
       break;
     case SECURITY:
       Log::d("SECURITY");
-      mSenMove = pinConsole.getValue(PIN_CHIP_IN_SENSOR_MOVE_4);
+      //mSenMove = pinConsole.getValue(PIN_CHIP_IN_SENSOR_MOVE_4);//TODO: uncomment
       if (mSenMove || mSenDoor) {
         Log::d("Moving Detected");
         if (BlinkAlarm(10) == true) {

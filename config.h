@@ -103,7 +103,7 @@ const int PIN_ANALOG_AVAILABLE_4 = 4;
 const int PIN_ANALOG_AVAILABLE_5 = 5;
 const int PIN_ANALOG_AVAILABLE_6 = 6;
 
-#define PULSE_WIDTH_USEC   5
+#define PULSE_WIDTH_USEC   10
 
 
 #endif

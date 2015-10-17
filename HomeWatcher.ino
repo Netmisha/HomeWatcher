@@ -132,7 +132,7 @@ void onSecond(){
   if (clk.mHour >= 8 && clk.mHour < 23)
   {
     Log::d("Day time");
-    if (clk.mHour >=8 && clk.mHour <= 9 || clk.mHour >= 19)
+    if (clk.mHour <= 9 || clk.mHour >= 19)
     {
       Log::d("Light on");
       pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn on
@@ -158,6 +158,8 @@ void onSecond(){
 }
 
 void loop() {
+  Log::d("***************BEGIN***************", mReguilarIteration);
+  Log::d("mCurentState", mCurentState);
   unsigned long startTime = millis();
   if (abs(startTime - lastTime)>1000)
   {
@@ -167,10 +169,6 @@ void loop() {
   #ifdef LOG_DEBUG
     delay(1000);
   #endif
-
-  Log::d("***************BEGIN***************");
-  Log::d("mCurentState", mCurentState);
-  Log::d("mReguilarIteration", mReguilarIteration);
   readData();
 
   if (mBtnReset) {

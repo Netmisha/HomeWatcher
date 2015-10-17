@@ -12,7 +12,7 @@ Clock::Clock(){
 }
 
 bool Clock::update(){
-        Serial.println("Clock::update");
+  Log::d("Clock::update");
 	Wire.beginTransmission(DS1307_I2C_ADDRESS);
 	Wire.write(decToBcd(0));
 	Wire.endTransmission();
@@ -27,6 +27,7 @@ bool Clock::update(){
 }
 
 void Clock::print(){
+  #ifdef LOG_DEBUG
 	Serial.print("Time: ");
  	Serial.print(mHour, DEC);
  	Serial.print(":");
@@ -40,6 +41,7 @@ void Clock::print(){
  	Serial.print("/");
  	Serial.print(mYear,DEC);
  	Serial.println();
+  #endif
 }
 
 byte Clock::decToBcd(byte val)

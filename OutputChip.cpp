@@ -1,6 +1,8 @@
 #include "Arduino.h"
 #include "OutputChip.h"
 
+#define PULSE_WIDTH_USEC   5
+
 OutputChip::OutputChip(int RCK, int SCK, int SI):
   pinRCK(RCK),
   pinSCK(SCK),
@@ -52,13 +54,23 @@ bool OutputChip::flush() {
     return false;
   }
   Log::d("OutputChip::flush() flushing");
+  digitalWrite(pinRCK, HIGH);
+  delay(PULSE_WIDTH_USEC);
   digitalWrite(pinRCK, LOW);
+  delay(PULSE_WIDTH_USEC);
   for (int i = PIN_COUNT-1; i >= 0; i--) {
     digitalWrite(pinSCK, LOW);
+    delay(PULSE_WIDTH_USEC);
     digitalWrite(pinSI, pins[i] == true ? HIGH : LOW);
+    delay(PULSE_WIDTH_USEC);
     digitalWrite(pinSCK, HIGH);
+    delay(PULSE_WIDTH_USEC);
   }
   digitalWrite(pinRCK, HIGH);
+  delay(PULSE_WIDTH_USEC);
+  digitalWrite(pinRCK, LOW);
+  digitalWrite(pinSCK, LOW);
+  digitalWrite(pinSI, LOW);
   mDataChanged = false;
   print();
 }

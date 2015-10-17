@@ -131,26 +131,26 @@ void onSecond(){
 
   if (clk.mHour >= 8 && clk.mHour < 23)
   {
-    Log::i("Day time");
-    if (clk.mHour == 8  || clk.mHour >= 19)
+    Log::d("Day time");
+    if (clk.mHour >=8 && clk.mHour <= 9 || clk.mHour >= 19)
     {
-      Log::i("Light on");
+      Log::d("Light on");
       pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, true);//Turn on
     }else{
-      Log::i("Light off");
+      Log::d("Light off");
       pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn off
     }
 
     if (clk.mMinute >= 0 && clk.mMinute < 15)
     {
-      Log::i("Filter on");
+      Log::d("Filter on");
       pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, true);//Turn On  
     }else{
-      Log::i("Filter off");
+      Log::d("Filter off");
       pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn off
     }
   }else{
-    Log::i("Night time");
+    Log::d("Night time");
     pinMonitor.setValue(PIN_CHIP_REMOTE_0_LIGHT, false);//Turn off
     pinMonitor.setValue(PIN_CHIP_REMOTE_1_FILTER, false);//Turn off
   }
@@ -201,6 +201,7 @@ void loop() {
   }
 
   mSenGas = analogRead(PIN_ANALOG_0_SEN_GAS);
+  mSenGas =0;
   Log::d("Gas Sensor", mSenGas);
   if (mSenGas > GAS_MAX_VAL) {
     Log::d("GAS_MAX_VAL", GAS_MAX_VAL);

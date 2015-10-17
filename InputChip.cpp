@@ -1,8 +1,6 @@
 #include "Arduino.h"
 #include "InputChip.h"
 
-#define PULSE_WIDTH_USEC   5
-
 InputChip::InputChip(int RCK, int SCK, int SI):
   pinRCK(RCK),
   pinSCK(SCK),
